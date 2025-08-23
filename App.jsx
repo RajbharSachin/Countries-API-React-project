@@ -10,7 +10,6 @@ const App = () => {
   const [query, setQuery] = useState('')
   return (
     <>
-      <Header />
       <main>
         <div className="search-filter-container">
           <SearchBar setQuery={setQuery} />
