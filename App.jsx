@@ -1,23 +1,12 @@
-import { useState } from 'react'
-import Header from './components/Header'
-import SearchBar from './components/SearchBar'
-import SelectMenu from './components/SelectMenu'
-import CountriesList from './components/CountriesList'
-
 import './App.css'
+import { Outlet } from 'react-router'
+import Header from './components/Header'
 
 const App = () => {
-  const [query, setQuery] = useState('')
   return (
     <>
-      <main>
-        <div className="search-filter-container">
-          <SearchBar setQuery={setQuery} />
-          <SelectMenu />
-        </div>
-        {/* {query === 'unmount'? '' : <CountriesList query={query} />} */}
-        <CountriesList query={query} />
-      </main>
+      <Header />
+      <Outlet />
     </>
   )
 }

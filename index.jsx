@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import App from './App'
+import Home from './components/Home'
 import Contact from './components/Contact'
 const root = createRoot(document.querySelector('#root'))
 
@@ -10,10 +11,16 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-  },
-  {
-    path: '/contact',
-    element: <div>Contact</div>,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
+      {
+        path: '/contact',
+        element: <Contact />,
+      },
+    ],
   },
 ])
 root.render(
