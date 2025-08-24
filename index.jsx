@@ -3,6 +3,7 @@ import App from './App'
 import Error from './components/Error'
 import Home from './components/Home'
 import Contact from './components/Contact'
+import CountryDetail from './components/CountryDetail'
 const root = createRoot(document.querySelector('#root'))
 
 // Use React-Router v7 dom with latest Parcel Version Compatibility
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: '/contact',
         element: <Contact />,
+      },
+      {
+        path: '/country',
+        element: <CountryDetail />,
       },
     ],
   },
