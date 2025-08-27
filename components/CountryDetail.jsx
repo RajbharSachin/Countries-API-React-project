@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import './CountryDetail.css'
+import { useParams } from 'react-router'
 export default function CountryDetail() {
   // FETCH STATE
-  const countryName = new URLSearchParams(location.search).get('name')
+  const params = useParams()
+  const countryName = params.country
+
   const [countryData, setCountryData] = useState(null)
+  const [notFound, setNotFound] = useState(false)
   useEffect(() => {
     fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
       .then((res) => res.json())
@@ -54,11 +58,12 @@ export default function CountryDetail() {
             border: [],
           }))
         }
-      })
-      .catch((error) => {
-        console.error('Error fetching country:', error)
+      }).catch((err) => {
+        setNotFound(true)
       })
   }, [countryName])
+
+  if(notFound) return <div>Country Not Found</div>
 
   // RENDER
   return countryData === null ? (
@@ -66,7 +71,7 @@ export default function CountryDetail() {
   ) : (
     <main>
       <div className="country-details-container">
-        <span className="back-button">
+        <span className="back-button" onClick={() => history.back()}>
           <i className="fa-solid fa-arrow-left"></i>&nbsp; Back
         </span>
         <div className="country-details">
