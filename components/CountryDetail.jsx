@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './CountryDetail.css'
-import { useParams } from 'react-router'
+import { Link, useParams } from 'react-router'
 export default function CountryDetail() {
   // FETCH STATE
   const params = useParams()
@@ -26,39 +26,24 @@ export default function CountryDetail() {
             .map((currency) => currency.name)
             .join(', '),
           languages: Object.values(data.languages).join(', '),
-          border: [], // Initialize border as empty array
+          borders: [], // Initialize border as empty array
         })
 
-        // FOR BORDER COUNTRIES - Update countryData instead of separate state
-        if (data.borders && data.borders.length > 0) {
-          Promise.all(
-            data.borders.map(
-              (border) =>
-                fetch(`https://restcountries.com/v3.1/alpha/${border}`)
-                  .then((res) => res.json())
-                  .then(([borderCountry]) => ({
-                    code: border,
-                    name: borderCountry.name.common,
-                  }))
-                  .catch(() => null) // Handle errors gracefully
-            )
-          ).then((results) => {
-            const borderCountries = results.filter(Boolean) // Remove null values
-
-            // Update countryData with border countries
-            setCountryData((prevData) => ({
-              ...prevData,
-              border: borderCountries,
-            }))
-          })
-        } else {
-          // No borders - update countryData with empty array
-          setCountryData((prevData) => ({
-            ...prevData,
-            border: [],
-          }))
+        if(!data.borders) {
+          data.borders = [] // not gives error & doesn't show if No Borders
         }
-      }).catch((err) => {
+        Promise.all( // Fetch all border countries promises FOR 3 TIMES RUN ONLY
+          data.borders.map((border) => {
+            return fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+              .then((res) => res.json())
+              .then(([borderCountry]) => borderCountry.name.common)
+          })
+        ).then((borders) => {
+          setCountryData((prevState) => ({...prevState, borders}))
+        })
+
+      }).catch((err) => { // error if incorrect country name
+        console.log(err);
         setNotFound(true)
       })
   }, [countryName])
@@ -114,31 +99,12 @@ export default function CountryDetail() {
                 <span className="languages"></span>
               </p>
             </div>
-            <div className="border-countries">
-              <b>Border Countries: </b>
-              {countryData.border && countryData.border.length > 0 ? (
-                countryData.border.map((border) => (
-                  <button
-                    key={border.code}
-                    onClick={() =>
-                      (window.location.search = `?name=${border.name}`)
-                    }
-                    style={{
-                      margin: '2px',
-                      padding: '4px 8px',
-                      border: '1px solid #ccc',
-                      background: '#f5f5f5',
-                      cursor: 'pointer',
-                      borderRadius: '4px',
-                    }}
-                  >
-                    {border.name}
-                  </button>
-                ))
-              ) : (
-                <span>None</span>
-              )}
-            </div>
+            {countryData.borders.length !== 0 && <div className="border-countries">
+              <b>Border Countries: </b>&nbsp;
+              {
+                countryData.borders.map((border) => <Link key={border} to={`/${border}`}>{border}</Link>)
+              }
+            </div>}
           </div>
         </div>
       </div>
