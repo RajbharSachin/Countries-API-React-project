@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import data from '../countriesData'
 import CountryCard from './CountryCard'
+import CountriesListShimmer from './CountriesListShimmer'
 
 export default function CountriesList({query}) {
 
@@ -19,6 +20,7 @@ export default function CountriesList({query}) {
       // }
   }, []) // Only RUN     1 time   OR   on variable state change
 
+  if(countriesData.length === 0) return <CountriesListShimmer />
   return (
     <>
       {/* <button onClick={() => setCountriesData([])}>Remove All Countries</button> */}
