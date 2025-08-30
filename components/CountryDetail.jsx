@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './CountryDetail.css'
-import { Link, useLocation, useParams } from 'react-router'
+import { Link, useLocation, useOutletContext, useParams } from 'react-router'
 export default function CountryDetail() {
   // FETCH STATE
+  const [isDark] = useOutletContext() // no need to Pass Props & avoid ❌'prop dilling' for Uplift State in React
   const params = useParams()
   const countryName = params.country
   const { state } = useLocation()
@@ -72,7 +73,7 @@ export default function CountryDetail() {
   return countryData === null ? (
     'loading...'
   ) : (
-    <main>
+    <main className={`${isDark? 'dark': ''}`}>
       <div className="country-details-container">
         <span className="back-button" onClick={() => history.back()}>
           <i className="fa-solid fa-arrow-left"></i>&nbsp; Back

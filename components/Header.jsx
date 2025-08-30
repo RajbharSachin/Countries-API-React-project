@@ -1,13 +1,25 @@
-export default function Header() {
+export default function Header({theme}) { // set initial DarkState from LOCAL-STORAGE & NEED TO UPLIFT STATE-Variable TO PARENT COMPONENT
+  const [isDark, setIsDark] = theme
+
+  //  ❌DIRECT DOM MANIPULATION when re-render on setIsDark State Value will set 
+  // if (isDark) {
+  //   document.body.classList.add('dark')
+  // } else {
+  //   document.body.classList.remove('dark')
+  // }
+
   return (
-    <header className="header-container">
+    <header className={`header-container ${isDark? 'dark': ''}`}>
       <div className="header-content">
         <h2 className="title">
           <a href="/">Where in the world?</a>
         </h2>
-        <p className="theme-changer">
-          <i className="fa-regular fa-moon" />
-          &nbsp;&nbsp;Dark Mode
+        <p className="theme-changer" onClick={() => {
+          setIsDark(!isDark)
+          localStorage.setItem('isDarkMode', !isDark)
+        }}>
+          <i className={`fa-solid fa-${isDark ? 'sun': 'moon'}`} />
+          &nbsp;&nbsp;{isDark? 'Light': 'Dark'} Mode
         </p>
       </div>
     </header>
