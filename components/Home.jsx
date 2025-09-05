@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import SearchBar from './SearchBar'
 import SelectMenu from './SelectMenu'
 import CountriesList from './CountriesList'
-import { useOutletContext } from 'react-router'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 export default function Home() {
   const [query, setQuery] = useState('')
-  const [isDark] = useOutletContext() // no need to Pass Props & avoid ❌'prop dilling' for Uplift State in React
 
+  // no need to Pass Props & avoid ❌'prop dilling' for Uplift State in React
+  const [isDark] = useContext(ThemeContext)
   return (
     <main className={`${isDark? 'dark': ''}`}>
       <div className="search-filter-container">
