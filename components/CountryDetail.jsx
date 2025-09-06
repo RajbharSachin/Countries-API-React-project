@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './CountryDetail.css'
 import { Link, useLocation, useParams } from 'react-router'
-import { ThemeContext } from '../contexts/ThemeContext'
+// import { useWindowSize } from '../hooks/useWindowSize'
+import { useTheme } from '../hooks/useTheme'
 export default function CountryDetail() {
   // FETCH STATE
   // no need to Pass Props & avoid ❌'prop dilling' for Uplift State in React
-  const [isDark] = useContext(ThemeContext)
+  const [isDark] = useTheme()
 
   const params = useParams()
   const countryName = params.country
@@ -14,6 +15,7 @@ export default function CountryDetail() {
 
   const [countryData, setCountryData] = useState(null)
   const [notFound, setNotFound] = useState(false)
+  // const windowSize = useWindowSize()
 
   function updateCountryData(data) {
     setCountryData({
@@ -77,6 +79,9 @@ export default function CountryDetail() {
     'loading...'
   ) : (
     <main className={`${isDark ? 'dark' : ''}`}>
+      {/* <h1 style={{ textAlign: 'center' }}>
+        {windowSize.width} X {windowSize.height}
+      </h1> */}
       <div className="country-details-container">
         <span className="back-button" onClick={() => history.back()}>
           <i className="fa-solid fa-arrow-left"></i>&nbsp; Back

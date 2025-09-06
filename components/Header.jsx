@@ -1,9 +1,8 @@
-import { useContext } from "react"
-import { ThemeContext } from "../contexts/ThemeContext"
+import { useTheme } from "../hooks/useTheme"
 
 export default function Header() {
   // set initial DarkState from LOCAL-STORAGE & NEED TO UPLIFT STATE-Variable TO PARENT COMPONENT
-  const [isDark, setIsDark] = useContext(ThemeContext)
+  const [isDark, setIsDark] = useTheme()
 
   //  ❌DIRECT DOM MANIPULATION when re-render on setIsDark State Value will set
   // if (isDark) {

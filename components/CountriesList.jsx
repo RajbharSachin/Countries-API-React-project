@@ -7,6 +7,8 @@ export default function CountriesList({query}) {
 
   const [countriesData, setCountriesData] = useState([])
 
+  // const [filteredData, setQuery] = useFilter(data, () => '')
+
   useEffect(() => {  
       setCountriesData(data)  // set imported data to state  FOR EMPTYING Purposes later
 
