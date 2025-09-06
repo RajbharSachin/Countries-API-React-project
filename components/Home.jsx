@@ -15,7 +15,7 @@ export default function Home() {
     <main className={`${isDark ? 'dark' : ''}`}>
       <div className="search-filter-container">
         <SearchBar setQuery={setQuery} />
-        <SelectMenu />
+        <SelectMenu setQuery={setQuery} />
       </div>
       {/* <h1 style={{ textAlign: 'center' }}>
         {windowSize.width} X {windowSize.height}

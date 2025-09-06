@@ -3,6 +3,7 @@ import './CountryDetail.css'
 import { Link, useLocation, useParams } from 'react-router'
 // import { useWindowSize } from '../hooks/useWindowSize'
 import { useTheme } from '../hooks/useTheme'
+import CountryDetailShimmer from './CountryDetailShimmer'
 export default function CountryDetail() {
   // FETCH STATE
   // no need to Pass Props & avoid ❌'prop dilling' for Uplift State in React
@@ -20,17 +21,17 @@ export default function CountryDetail() {
   function updateCountryData(data) {
     setCountryData({
       name: data.name.common,
-      nativeName: Object.values(data.name.nativeName)[0].common,
+      nativeName: Object.values(data.name.nativeName || {})[0]?.common,
       population: data.population,
       region: data.region,
       subregion: data.subregion,
       capital: data.capital,
       flag: data.flags.svg,
       tld: data.tld,
-      currencies: Object.values(data.currencies)
+      currencies: Object.values(data.currencies || {})
         .map((currency) => currency.name)
         .join(', '),
-      languages: Object.values(data.languages).join(', '),
+      languages: Object.values(data.languages || {}).join(', '),
       borders: [], // Initialize border as empty array
     })
 
@@ -75,9 +76,10 @@ export default function CountryDetail() {
   if (notFound) return <div>Country Not Found</div>
 
   // RENDER
-  return countryData === null ? (
-    'loading...'
-  ) : (
+  // countryData === null ? (
+  //   'loading...'
+  // ) : 
+  return (
     <main className={`${isDark ? 'dark' : ''}`}>
       {/* <h1 style={{ textAlign: 'center' }}>
         {windowSize.width} X {windowSize.height}
@@ -86,13 +88,16 @@ export default function CountryDetail() {
         <span className="back-button" onClick={() => history.back()}>
           <i className="fa-solid fa-arrow-left"></i>&nbsp; Back
         </span>
+        {countryData ===null ? (
+          <CountryDetailShimmer />
+        ) : (
         <div className="country-details">
           <img src={countryData.flag} alt={`${countryData.name} flag`} />
           <div className="details-text-container">
             <h1>{countryData.name}</h1>
             <div className="details-text">
               <p>
-                <b>Native Name: {countryData.nativeName}</b>
+                <b>Native Name: {countryData.nativeName || countryData.name}</b>
                 <span className="native-name"></span>
               </p>
               <p>
@@ -110,7 +115,7 @@ export default function CountryDetail() {
                 <span className="sub-region"></span>
               </p>
               <p>
-                <b>Capital: {countryData.capital.join(', ')}</b>
+                <b>Capital: {countryData.capital?.join(', ')}</b>
                 <span className="capital"></span>
               </p>
               <p>
@@ -138,6 +143,7 @@ export default function CountryDetail() {
             )}
           </div>
         </div>
+        )}
       </div>
     </main>
   )
